@@ -40,3 +40,7 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
   "org.scalatest" %% "scalatest" %  "3.0.0" % "test",
   "org.specs2" %% "specs2-mock" % "2.4.17" % "test")
+
+
+//Plugins
+enablePlugins(JavaAppPackaging)
