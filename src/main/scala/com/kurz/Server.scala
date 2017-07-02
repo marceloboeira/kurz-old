@@ -6,6 +6,8 @@ import com.kurz.controllers.RootController
 object Application extends Server
 
 class Server extends HttpServer {
+  override val disableAdminHttpServer = true
+
   override protected def configureHttp(router: HttpRouter): Unit = {
     router.add(new RootController)
   }
