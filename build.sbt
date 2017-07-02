@@ -7,6 +7,7 @@ lazy val versions = new {
   val finatra = "2.11.0"
   val guice = "4.0"
   val logback = "1.1.7"
+  val redis = "2.7.2"
 }
 
 resolvers ++= Seq(
@@ -19,6 +20,7 @@ libraryDependencies ++= Seq(
   "com.twitter" %% "finatra-http" % versions.finatra,
   "com.twitter" %% "finatra-httpclient" % versions.finatra,
   "ch.qos.logback" % "logback-classic" % versions.logback,
+  "redis.clients" % "jedis" % versions.redis,
 
   "com.twitter" %% "finatra-httpclient" % versions.finatra % "test",
   "com.twitter" %% "finatra-http" % versions.finatra % "test",

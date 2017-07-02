@@ -1,14 +1,16 @@
 package com.kurz
+
+import com.kurz.controllers.MainController
+import com.kurz.modules.{KurzModule, ServicesModule}
 import com.twitter.finatra.http.HttpServer
 import com.twitter.finatra.http.routing.HttpRouter
-import com.kurz.controllers.RootController
 
 object Application extends Server
 
 class Server extends HttpServer {
-  override val disableAdminHttpServer = true
+  override def modules = Seq(ServicesModule, KurzModule)
 
-  override protected def configureHttp(router: HttpRouter): Unit = {
-    router.add(new RootController)
+  override protected def configureHttp(router: HttpRouter) {
+    router.add(new MainController)
   }
 }
