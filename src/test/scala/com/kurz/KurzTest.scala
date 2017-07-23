@@ -10,15 +10,19 @@ class RedirectionSpec extends FunSpec with Matchers {
 
   describe ("redirection") {
     describe("when the slug exists") {
-      it("redirects to the expected URL") {
+      it("returns with the temporary redirection status") {
         RedisConnectionPool.instance.getResource().set("mb", "http://marceloboeira.com")
         redirection(Input.get("/mb")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.TemporaryRedirect)
+      }
+
+      it("returns with the proper header for Location") {
+        redirection(Input.get("/mb")).awaitOutputUnsafe().map(_.headers) shouldBe Some(Map("Location" -> "http://marceloboeira.com"))
       }
     }
 
     describe("when the slug does not exist") {
-      it("returns not found") {
-        redirection(Input.get("/foo")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.NotFound)
+      it("returns with the not found status") {
+        redirection(Input.get("/invalid")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.NotFound)
       }
     }
   }
