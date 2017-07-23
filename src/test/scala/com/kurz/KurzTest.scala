@@ -1,27 +1,24 @@
 package com.kurz
 
+import com.kurz.services.RedisConnectionPool
 import com.twitter.finagle.http.Status
-import com.twitter.finatra.http.EmbeddedHttpServer
-import com.twitter.inject.server.FeatureTestMixin
-import org.scalatest.FunSpec
+import io.finch.Input
+import org.scalatest.{FunSpec, Matchers}
 
-class KurzTest extends FunSpec with FeatureTestMixin {
-  override val server: EmbeddedHttpServer = new EmbeddedHttpServer(twitterServer = new Server)
+class RedirectionSpec extends FunSpec with Matchers {
+  import com.kurz.Server.redirection
 
-  describe("redirection") {
+  describe ("redirection") {
     describe("when the slug exists") {
       it("redirects to the expected URL") {
-        server.httpGet(
-          path = "/google",
-          andExpect = Status.TemporaryRedirect,
-          withLocation = "http://google.com"
-        )
+        RedisConnectionPool.instance.getResource().set("mb", "http://marceloboeira.com")
+        redirection(Input.get("/mb")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.TemporaryRedirect)
       }
     }
 
     describe("when the slug does not exist") {
       it("returns not found") {
-        server.httpGet(path = "/invalid", andExpect = Status.NotFound)
+        redirection(Input.get("/foo")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.NotFound)
       }
     }
   }
