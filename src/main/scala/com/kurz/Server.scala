@@ -9,6 +9,8 @@ import com.twitter.finagle.http.Status
 import io.finch._
 
 object Server extends TwitterServer {
+  val port = flag("http.port", "5000", "HTTP Server port")
+
   val redirection: Endpoint[Unit] = get(string) { slug: String =>
     val urlService = new RedisUrlService
 
@@ -21,7 +23,7 @@ object Server extends TwitterServer {
   def main(): Unit = {
     val server = Http.server
       .configured(Stats(statsReceiver))
-      .serve(":8081", (redirection).toService)
+      .serve(s":${port()}", (redirection).toService)
 
     onExit {
       server.close()

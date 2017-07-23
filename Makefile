@@ -1,6 +1,6 @@
 .PHONY: start
 start:
-	target/universal/stage/bin/com-kurz -- -http.port=:$(PORT)
+	target/universal/stage/bin/com-kurz -- -http.port=$(PORT)
 
 .PHONY: test
 test:
