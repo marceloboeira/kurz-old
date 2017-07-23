@@ -6,6 +6,9 @@ start:
 test:
 	sbt test
 
+.PHONY: spec
+spec: test
+
 .PHONY: deploy
 deploy:
 	git push heroku master
