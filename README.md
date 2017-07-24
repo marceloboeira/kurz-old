@@ -1,4 +1,4 @@
-# Kurz
+# Kurz [![Build Status](https://travis-ci.org/marceloboeira/kurz.svg?branch=master)](https://travis-ci.org/marceloboeira/kurz)
 > A URL Shortner
 
 ## Redirection
