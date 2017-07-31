@@ -3,15 +3,19 @@ package com.kurz
 import com.kurz.services.RedisConnectionPool
 import com.twitter.finagle.http.Status
 import io.finch.Input
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{BeforeAndAfter, FunSpec, Matchers}
 
-class RedirectionSpec extends FunSpec with Matchers {
+class RedirectionSpec extends FunSpec with Matchers with BeforeAndAfter {
   import com.kurz.Server.redirection
+
+  before {
+    RedisConnectionPool.instance.getResource().del("mb")
+    RedisConnectionPool.instance.getResource().set("mb", "http://marceloboeira.com")
+  }
 
   describe ("redirection") {
     describe("when the slug exists") {
       it("returns with the temporary redirection status") {
-        RedisConnectionPool.instance.getResource().set("mb", "http://marceloboeira.com")
         redirection(Input.get("/mb")).awaitOutputUnsafe().map(_.status) shouldBe Some(Status.TemporaryRedirect)
       }
 
