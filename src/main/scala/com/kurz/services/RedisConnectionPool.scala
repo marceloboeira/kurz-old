@@ -6,14 +6,19 @@ import redis.clients.jedis.{JedisPool, JedisPoolConfig}
 
 object RedisConnectionPool {
   lazy val instance: JedisPool = {
-    val poolConfig = new JedisPoolConfig()
-
-    poolConfig.setMaxTotal(100)
-    poolConfig.setMinIdle(100)
-    poolConfig.setMaxIdle(100)
-    poolConfig.setMaxWaitMillis(10000)
-
     new JedisPool(poolConfig, connectionURI, 10000)
+  }
+
+  lazy val poolConfig: JedisPoolConfig = {
+    val config = new JedisPoolConfig()
+
+    // Use ENV to set MAX/MIN/IDLE?
+    config.setMaxTotal(100)
+    config.setMinIdle(100)
+    config.setMaxIdle(100)
+    config.setMaxWaitMillis(10000)
+
+    config
   }
 
   lazy val connectionURI: URI = {
