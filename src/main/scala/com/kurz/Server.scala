@@ -21,9 +21,7 @@ object Server extends TwitterServer {
   }
 
   def main(): Unit = {
-    val server = Http.server
-      .configured(Stats(statsReceiver))
-      .serve(s":${port()}", (redirection).toService)
+    val server = Http.server.serve(s":${port()}", (redirection).toService)
 
     onExit {
       server.close()
